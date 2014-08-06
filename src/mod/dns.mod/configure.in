@@ -1,0 +1,52 @@
+dnl Eggdrop compile-time configuration file for src/mod/dns.mod
+dnl
+dnl $Id: configure.in,v 1.3 2000/03/05 23:22:49 fabian Exp $
+
+dnl This file is based on the autoconf m4 macros. Special eggdrop
+dnl macros are used to optimise the size of the resulting configure
+dnl script `./configure'.  Run `../eggautoconf' to update that
+dnl script. You need to have the GNU autoconf package installed
+dnl though.
+
+
+dnl Instead of AC_INIT, we call EGG_INIT().
+sinclude(../eggmod.m4)
+EGG_INIT(coredns.c)
+
+
+dns_reslib_avail="true"
+AC_CHECK_FUNC(res_init, ,
+  AC_CHECK_LIB(resolv, res_init, RESLIB="-lresolv",
+    AC_CHECK_LIB(bind, res_init, RESLIB="-lbind", [dnl
+      dns_reslib_avail="false";
+    ])dnl
+  )dnl
+)dnl
+AC_CHECK_FUNC(res_mkquery, ,
+  AC_CHECK_LIB(resolv, res_mkquery, [dnl
+    if test "x${RESLIB}" != "x-lresolv"; then
+      RESLIB="${RESLIB} -lresolv"
+    fi
+  ],
+    AC_CHECK_LIB(bind, res_mkquery, [dnl
+      if test "x${RESLIB}" != "x-lbind"; then
+        RESLIB="${RESLIB} -lbind"
+      fi
+    ], [dnl
+      dns_reslib_avail="false";
+    ])
+  )
+)
+if test "${dns_reslib_avail}" = false; then
+  cat >&2 <<EOF
+configure: warning:
+
+  Your system provides no functional resolver library. The DNS
+  module will therefore be disabled.
+
+EOF
+  EGG_REMOVE_MOD(dns)
+fi
+AC_SUBST(RESLIB)
+
+AC_OUTPUT(Makefile)

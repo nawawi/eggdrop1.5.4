@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!-- $Id: mod-share.html,v 1.2 2000/04/13 11:21:24 tothwolf Exp $ -->
+
+<html>
+  <head>
+    <title>Eggdrop Documentation: Share module</title>
+  </head>
+
+  <body>
+    <div align="center">
+      <p><strong>Share module</strong></p>
+    </div>
+    <hr>
+
+    <p>This module provides share support for userfile data. You can share
+    users, flags, passwords, greets, comments, etc. to a directly linked
+    bot.</p>
+
+    <blockquote>
+      <ol>
+        <li><a href="#config">Config file settings</a></li>
+
+        <li><a href="#tclcmd">Tcl commands</a></li>
+      </ol>
+    </blockquote>
+    <hr>
+
+    <p><a name="config">1. <strong>Config file settings</strong></a></p>
+
+    <blockquote>
+      <p>Lines in <strong>bold</strong> are the lines that need to be
+      included in the eggdrop config file if you want to use the share
+      module.<br>
+       Lines in bold <strong><em>italics</em></strong> are optional and only
+      required if you wish to change the default behaviour for that
+      particular feature.</p>
+
+      <p>Put this line into your config file to load the share module:</p>
+
+      <p><strong>loadmodule share</strong></p>
+
+      <p>There are also some variables you can to set in your config
+      file:</p>
+    </blockquote>
+
+    <blockquote>
+      <dl>
+        <dt><strong><em>set allow-resync 0</em></strong></dt>
+
+        <dd>
+          <p>When two bots get disconnected this setting allows the hub to
+          create a resync buffer which saves all changes done to the userfile
+          during the disconnect. So, when they reconnect, they will not have
+          to transfer the complete user file, but instead, just the resync
+          buffer.</p>
+
+          <p>NOTE: This feature is buggy at the moment and usage is not
+          recommended.</p>
+
+          <p>Valid settings: 1 to enable, 0 to disable.</p>
+        </dd>
+
+        <dt><strong><em>set resync-time 900</em></strong></dt>
+
+        <dd>
+          <p>This setting changes the time how long the bot holds another
+          bots resync data before flushing it.</p>
+
+          <p>Valid settings: 1 to enable, 0 to disable.</p>
+        </dd>
+
+        <dt><strong><em>set private-global 0</em></strong></dt>
+
+        <dd>
+          <p>This setting makes your bot ignore all global flag changes from
+          other bots.</p>
+
+          <p>NOTE: The bot will still send any changes made on it, it just
+          wont accept changes from other bot.</p>
+
+          <p>Valid settings: 1 to enable, 0 to disable.</p>
+        </dd>
+
+        <dt><strong><em>set private-globals &quot;&quot;</em></strong></dt>
+
+        <dd>
+          <p>This setting makes your bot ignore all global flag changes you
+          specify from other bots. It works similar to private-global, but
+          allows you to strip just certain flags (ie. owner flag)</p>
+        </dd>
+
+        <dt><strong><em>set private-user 0</em></strong></dt>
+
+        <dd>
+          <p>This setting makes your bot ignore all changes to it&#39;s
+          userfile done by other bots.</p>
+
+          <p>NOTE: This setting can desynch your userfile between your share
+          bots, since it forces all changes to be made from this bot.</p>
+
+          <p>Valid settings: 1 to enable, 0 to disable.</p>
+        </dd>
+
+        <dt><strong><em>set override-bots 0</em></strong></dt>
+
+        <dd>
+          <p>This setting makes your bot discard it&#39;s own bot records in
+          favor of the ones sent by the hub.</p>
+
+          <p>NOTE: passwords and botflags don&#39;t get shared with this
+          setting.</p>
+
+          <p>Valid settings: 1 to enable, 0 to disable.</p>
+        </dd>
+      </dl>
+    </blockquote>
+    <hr>
+
+    <p><a name="tclcmd">2. <strong>Tcl commands</strong></a></p>
+
+    <blockquote>
+      <dl>
+        <dt><strong>getting-users</strong></dt>
+
+        <dd>
+          <p>returns: <em>&quot;1&quot;</em> if the bot is currently
+          downloading a userfile from a sharebot (and hence, user records are
+          about to drastically change) <em>&quot;0&quot;</em> otherwise</p>
+        </dd>
+      </dl>
+    </blockquote>
+    <hr>
+
+    <p><em>© 1997 Robey Pointer<br>
+     © 1999,2000 Eggheads Development Team</em></p>
+  </body>
+</html>
+
